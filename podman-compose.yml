@@ -1,0 +1,66 @@
+services:
+  # 1. The Pre-built Database Appliance
+  db:
+    image: docker.io/library/postgres:15-alpine
+    container_name: karaoke_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: backendpassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - karaoke_net
+
+  # 2. The Pre-built Database GUI
+  db_admin:
+    image: docker.io/dpage/pgadmin4
+    container_name: karaoke_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "9091:80"
+    depends_on:
+      - db
+    networks:
+      - karaoke_net
+
+  # 3. The Pre-built Storage Appliance
+  minio:
+    image: docker.io/minio/minio
+    container_name: karaoke_minio
+    environment:
+      MINIO_ROOT_USER: rootUser
+      MINIO_ROOT_PASSWORD: rootPassword123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - karaoke_net
+
+  # 4. Your Custom Backend Appliance
+  backend:
+    image: karaoke-backend
+    container_name: karaoke_api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - minio
+    networks:
+      - karaoke_net
+
+# Permanent storage for our databases so data survives a reboot
+volumes:
+  pg_data: {}
+  minio_data: {}
+
+# The secure virtual Wi-Fi router connecting all four containers
+networks:
+  karaoke_net: {}
