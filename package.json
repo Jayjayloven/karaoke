@@ -10,13 +10,16 @@
     "start": "node dist/index.js",
     "dev": "tsx watch --env-file=.env src/app.ts",
     "podman:up": "podman-compose up -d && podman ps",
-    "podman:down": "podman-compose down"
+    "podman:down": "podman-compose down",
+    "migrate": "node --env-file=.env ./node_modules/node-pg-migrate/bin/node-pg-migrate.js up",
+    "migrate:create": "node-pg-migrate create"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^5.2.1",
+    "node-pg-migrate": "^9.0.0",
     "pg": "^8.23.0",
     "ws": "^8.21.3"
   },

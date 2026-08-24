@@ -4,9 +4,9 @@ services:
     image: docker.io/library/postgres:15-alpine
     container_name: karaoke_db
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: backendpassword
-      POSTGRES_DB: mydatabase
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DB: karaoke_database
     ports:
       - "5432:5432"
     volumes:
@@ -21,6 +21,11 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: user@example.com
       PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json:ro
+      - ./pgpass:/pgadmin4/pgpass:ro
     ports:
       - "9091:80"
     depends_on:
