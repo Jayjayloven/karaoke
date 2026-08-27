@@ -1,14 +1,15 @@
 import express from "express";
 import { createServer } from "node:http";
 import { WebSocketServer } from "ws";
+import { roomRouter } from "./modules/room/presentation/RoomRoutes.js";
 
 const app = express();
 app.use(express.json());
 
-
 const httpServer = createServer(app);
 const wss = new WebSocketServer({ server: httpServer });
 
+app.use("/api", roomRouter);
 app.get("/", (req, res) => {
   res.send("Karaoke App API is running!");
 });
@@ -20,13 +21,15 @@ wss.on("connection", (ws) => {
   ws.on("message", (rawMessage) => {
     const parsedMessage = JSON.parse(rawMessage.toString());
     console.log(parsedMessage.text);
-    ws.send("HELLO FROM THE BACKEND!")
+    ws.send("HELLO FROM THE BACKEND!");
   });
 });
 
-// 4. Using the new PORT variable
 httpServer.listen(process.env.PORT, () => {
-  console.log(`Dual server is live and listening on http://localhost:${process.env.PORT}`);
+  console.log(
+    `Dual server is live and listening on http://localhost:${process.env.PORT}`,
+  );
+  console.log(`PgAdmin`);
 });
 
 export default app;

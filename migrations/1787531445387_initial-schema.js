@@ -9,9 +9,29 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-  // 1. Create Users Table
+  pgm.sql(`
+    CREATE OR REPLACE FUNCTION generate_unique_room_code()
+    RETURNS text AS $$
+    DECLARE
+      chars text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      new_code text;
+      is_unique boolean;
+    BEGIN
+      LOOP
+        new_code := '';
+        FOR i IN 1..4 LOOP
+          new_code := new_code || substr(chars, floor(random() * length(chars) + 1)::integer, 1);
+        END LOOP;
+        SELECT NOT EXISTS(SELECT 1 FROM rooms WHERE room_code = new_code) INTO is_unique;
+        EXIT WHEN is_unique;
+      END LOOP;
+      RETURN new_code;
+    END;
+    $$ LANGUAGE plpgsql VOLATILE;
+  `);
+
   pgm.createTable("users", {
-    id: "id", // Automatically creates a serial primary key
+    id: "id",
     username: { type: "varchar(100)", notNull: true },
     created_at: {
       type: "timestamp",
@@ -20,27 +40,39 @@ export const up = (pgm) => {
     },
   });
 
-  // 2. Create Rooms Table
+  // 3. Create Rooms Table
   pgm.createTable("rooms", {
     id: "id",
-    room_code: { type: "varchar(10)", notNull: true, unique: true },
+    room_name: { type: "varchar(100)", notNull: true },
+    room_code: {
+      type: "varchar(10)",
+      notNull: true,
+      unique: true,
+      default: pgm.func("generate_unique_room_code()"),
+    },
     host_id: {
       type: "integer",
       notNull: true,
       references: '"users"',
-      onDelete: "cascade", // If the host is deleted, delete the room
+      onDelete: "cascade",
     },
     created_at: {
       type: "timestamp",
       notNull: true,
       default: pgm.func("current_timestamp"),
     },
+    status: {
+      type: "varchar(20)",
+      notNull: true,
+      default: "open",
+      check: "status IN ('open', 'closed')",
+    },
   });
 
   pgm.addColumn("users", {
     room_id: {
       type: "integer",
-      references: "rooms",
+      references: '"rooms"',
       onDelete: "SET NULL",
     },
   });
@@ -76,8 +108,11 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-  pgm.dropTable("song_que");
-  pgm.dropColumns("users", [session_id]);
+  pgm.dropTable("song_queue");
+  pgm.dropColumns("users", ["room_id"]);
+
   pgm.dropTable("rooms");
   pgm.dropTable("users");
+
+  pgm.sql(`DROP FUNCTION IF EXISTS generate_unique_room_code();`);
 };

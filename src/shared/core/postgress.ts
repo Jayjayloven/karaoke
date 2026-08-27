@@ -1,6 +1,6 @@
 import { Pool, type PoolClient } from "pg";
 
-export class PostgresDb {
+export class PostgresDbPool {
   private readonly dbPool: Pool;
 
   constructor() {
@@ -28,3 +28,6 @@ export class PostgresDb {
     client.release();
   }
 }
+
+//TODO instantiate in app.tsx
+export const dbPool = new PostgresDbPool();
