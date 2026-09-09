@@ -12,6 +12,34 @@ const createRoomUseCase = new CreateRoomUseCase(roomRepository);
 
 const roomController = new RoomController(createRoomUseCase);
 
-router.post("/rooms", roomController.createRoom);
+/**
+ * @swagger
+ * /rooms:
+ *   post:
+ *     summary: Create a new karaoke room
+ *     tags: [Rooms]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - roomName
+ *               - hostId
+ *             properties:
+ *               roomName:
+ *                 type: string
+ *                 example: "Friday Night Jams"
+ *               hostId:
+ *                 type: integer
+ *                 example: 1
+ *     responses:
+ *       201:
+ *         description: Room created successfully
+ *       400:
+ *         description: Bad request
+ */
+router.post("/rooms", (req, res) => roomController.createRoom(req, res));
 
 export const roomRouter = router;

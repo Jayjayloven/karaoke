@@ -10,6 +10,7 @@ export class RoomController {
     res: Response,
   ): Promise<void> {
     try {
+      console.log("in createRoom Controller");
       const result = await this.createRoomUseCase.execute(req.body);
       res.status(201).json(result);
     } catch (error: any) {

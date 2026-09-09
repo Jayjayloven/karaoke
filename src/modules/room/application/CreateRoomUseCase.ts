@@ -7,6 +7,7 @@ export class CreateRoomUseCase {
 
   public async execute(data: CreateRoomReq): Promise<Room> {
     try {
+      console.log('in createRoomUseCase')
       const result = await this.roomRepo.createRoom(data.roomName, data.hostId);
       return result;
     } catch (err) {

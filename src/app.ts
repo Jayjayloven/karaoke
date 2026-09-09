@@ -2,6 +2,8 @@ import express from "express";
 import { createServer } from "node:http";
 import { WebSocketServer } from "ws";
 import { roomRouter } from "./modules/room/presentation/RoomRoutes.js";
+import { swaggerSpec } from "./shared/core/swagger.js";
+import swaggerUi from "swagger-ui-express"
 
 const app = express();
 app.use(express.json());
@@ -9,6 +11,7 @@ app.use(express.json());
 const httpServer = createServer(app);
 const wss = new WebSocketServer({ server: httpServer });
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api", roomRouter);
 app.get("/", (req, res) => {
   res.send("Karaoke App API is running!");

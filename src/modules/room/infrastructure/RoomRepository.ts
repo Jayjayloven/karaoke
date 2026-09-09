@@ -31,6 +31,7 @@ export class RoomRepository {
     const values = [roomName, hostId, RoomStatusEnum.OPEN];
 
     try {
+      console.log("in create Room Repository")
       const result = await this.dbPool.query(query, values);
       return result.rows[0];
     } catch (error) {
