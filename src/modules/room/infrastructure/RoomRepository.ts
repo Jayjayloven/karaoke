@@ -1,6 +1,5 @@
 import type { PostgresDbPool } from "../../../shared/core/postgress.js";
-import type { Room } from "../models/Room.js";
-import { RoomStatusEnum } from "../models/RoomStatus.js";
+import { Room } from "../domain/Room.js";
 
 export class NotFoundError extends Error {
   constructor(message: string) {
@@ -31,36 +30,53 @@ export class RoomRepository {
       return null;
     }
 
-    return result.rows[0];
+    const row = result.rows[0];
+    return new Room(
+      row.id,
+      row.room_name,
+      row.room_code,
+      row.host_id,
+      row.created_at,
+      row.status,
+    );
   }
 
-  public async createRoom(roomName: string, hostId: number): Promise<Room> {
+  public async createRoom(room: Room): Promise<Room> {
     const query = `
-      INSERT INTO rooms(room_name, host_id, status)
-      VALUES ($1, $2, $3)
-      RETURNING *`;
+    INSERT INTO rooms(room_name, host_id, status)
+    VALUES ($1, $2, $3)
+    RETURNING *`;
 
-    const values = [roomName, hostId, RoomStatusEnum.OPEN];
+    // Extract data from the domain entity
+    const values = [room.getRoomName(), room.getHostId(), room.getStatus()];
     const result = await this.dbPool.query(query, values);
+    const row = result.rows[0];
 
-    return result.rows[0];
+    // Reconstruct and return a fully populated Domain Entity from the database
+    return new Room(
+      row.id,
+      row.room_name,
+      row.room_code,
+      row.host_id,
+      row.created_at,
+      row.status,
+    );
   }
 
-  public async deleteRoom(roomId: number, userId: number): Promise<boolean> {
-    const room = await this.findById(roomId);
-
-    if (!room) {
-      throw new NotFoundError(`Room with ID ${roomId} not found.`);
-    }
-
-    if (Number.parseInt(room.host_id) !== userId) {
-      throw new UnauthorizedError(
-        `User ${userId} is not authorized to delete room ${roomId}.`,
-      );
-    }
-
+  // The delete method becomes dead simple:
+  public async deleteRoom(roomId: number): Promise<boolean> {
     const query = `DELETE FROM rooms WHERE id = $1`;
     const result = await this.dbPool.query(query, [roomId]);
+    return result.rowCount !== null && result.rowCount > 0;
+  }
+
+  public async joinRoom(userId: string, roomId: number): Promise<boolean> {
+    const query = `UPDATE users SET room_id = $1 WHERE id = $2`;
+
+    const values = [roomId, userId];
+
+    const result = await this.dbPool.query(query, values);
+
     return result.rowCount !== null && result.rowCount > 0;
   }
 }

@@ -1,6 +1,8 @@
-import type { Room } from "../models/Room.js";
+import type { Room } from "../domain/Room.js";
 
 export interface IRoomRepository {
-  createRoom(roomName: string, hostId: number): Promise<Room>;
-  deleteRoom(roomId: number, userId: number): Promise<boolean>;
+  findById(id: number): Promise<Room | null>;
+  createRoom(room: Room): Promise<Room>;
+  deleteRoom(roomId: number): Promise<boolean>;
+  joinRoom(userId: string, roomId: number): Promise<boolean>;
 }
