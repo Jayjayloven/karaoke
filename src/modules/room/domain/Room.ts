@@ -1,6 +1,7 @@
 import { RoomStatusEnum } from "../models/RoomStatus.js";
 
 export class Room {
+
   constructor(
     private readonly id: string | null, // null before DB insertion
     private readonly room_name: string,
@@ -49,7 +50,7 @@ export class Room {
     }
   }
 
-  public createRoom(
+  public static createRoom(
     roomName: string,
     hostId: number,
     initialStatus: RoomStatusEnum,
