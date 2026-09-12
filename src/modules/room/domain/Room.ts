@@ -10,12 +10,21 @@ export class Room {
     private status: RoomStatusEnum,
   ) {}
 
-  public static createNew(
-    roomName: string,
-    hostId: number,
-    initialStatus: RoomStatusEnum,
-  ): Room {
-    return new Room(null, roomName, null, hostId, null, initialStatus);
+  public getId(): number {
+    if (!this.id) throw new Error("Room ID is not set.");
+    return Number.parseInt(this.id);
+  }
+
+  public getRoomName(): string {
+    return this.room_name;
+  }
+
+  public getHostId(): number {
+    return this.host_id;
+  }
+
+  public getStatus(): RoomStatusEnum {
+    return this.status;
   }
 
   public verifyOwnership(requestingUserId: number): void {
@@ -28,31 +37,38 @@ export class Room {
 
   public validateRoomCode(roomCode: string): void {
     if (this.room_code !== roomCode) {
-        throw new Error(
-            `Room code ${roomCode} is not incorrect for room ${this.id}:${this.room_name}.`,
-        )
+      throw new Error(
+        `Room code ${roomCode} is not incorrect for room ${this.id}:${this.room_name}.`,
+      );
     }
   }
 
   public validateRoomStatus(): void {
     if (this.status === RoomStatusEnum.CLOSED) {
-      throw new Error(`Room ${this.id}:${this.room_name} has been closed.`)
+      throw new Error(`Room ${this.id}:${this.room_name} has been closed.`);
     }
   }
 
-
-  public getId(): number {
-    if (!this.id) throw new Error("Room ID is not set.");
-    return Number.parseInt(this.id);
+  public createRoom(
+    roomName: string,
+    hostId: number,
+    initialStatus: RoomStatusEnum,
+  ): Room {
+    return new Room(null, roomName, null, hostId, null, initialStatus);
   }
 
-  public getRoomName(): string {
-    return this.room_name;
-  }
-  public getHostId(): number {
-    return this.host_id;
-  }
-  public getStatus(): RoomStatusEnum {
-    return this.status;
+  // check room status
+  // if room status is closed throw error
+  // check ownership
+  // if ownership transfer room host to next member if available, if not, close room
+  // void
+
+  public leaveRoom(leavingUserId: string, newHostId? : string): void {
+    this.validateRoomStatus();
+
+    if (String(this.host_id) === leavingUserId) {
+      this.status = RoomStatusEnum.CLOSED;
+    }
+
   }
 }

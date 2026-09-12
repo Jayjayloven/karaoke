@@ -79,4 +79,18 @@ export class RoomRepository {
 
     return result.rowCount !== null && result.rowCount > 0;
   }
+
+  public async updateRoom(room: Room): Promise<boolean> {
+    const query = `UPDATE rooms SET status = $1, host_id = $2, room_name = $3 WHERE id = $4`;
+    const values = [
+      room.getStatus(),
+      room.getHostId(),
+      room.getRoomName(),
+      room.getId(),
+    ];
+
+    const result = await this.dbPool.query(query, values);
+
+    return result.rowCount !== null && result.rowCount > 0;
+  }
 }

@@ -7,7 +7,7 @@ export class CreateRoomUseCase {
   constructor(private readonly roomRepo: IRoomRepository) {}
 
   public async execute(data: CreateRoomReq): Promise<Room> {
-    const newRoom = Room.createNew(
+    const newRoom = Room.createRoom(
       data.roomName,
       data.hostId,
       RoomStatusEnum.OPEN,

@@ -1,6 +1,7 @@
 import type { IRoomRepository } from "../models/IRoomRepository.js";
 import type { DeleteRoomReq } from "../models/RoomDTO.js";
 
+// TODO: change to a soft delete
 export class DeleteRoomUseCase {
   constructor(private readonly roomRepo: IRoomRepository) {}
 

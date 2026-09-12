@@ -5,6 +5,7 @@ import { dbPool } from "../../../shared/core/postgress.js";
 import { RoomController } from "./RoomController.js";
 import { DeleteRoomUseCase } from "../application/DeleteRoomUseCase.js";
 import { JoinRoomUseCase } from "../application/JoinRoomUseCase.js";
+import { LeaveRoomUseCase } from "../application/LeaveRoomUseCase.js";
 
 const router = Router();
 
@@ -13,11 +14,14 @@ const roomRepository = new RoomRepository(dbPool);
 const createRoomUseCase = new CreateRoomUseCase(roomRepository);
 const deleteRoomUseCase = new DeleteRoomUseCase(roomRepository);
 const joinRoomUseCase = new JoinRoomUseCase(roomRepository);
+const leaveRoomUseCase = new LeaveRoomUseCase(roomRepository, userRepository); 
+// TODO: create userRepository and a dependency injection file for all the useCases
 
 const roomController = new RoomController(
   createRoomUseCase,
   deleteRoomUseCase,
   joinRoomUseCase,
+  leaveRoomUseCase,
 );
 
 /**
@@ -114,5 +118,35 @@ router.delete("/rooms", (req, res) => roomController.deleteRoom(req, res));
  */
 router.patch("/rooms", (req, res) => roomController.joinRoom(req, res));
 
+/**
+ * @swagger
+ * /rooms:
+ *   patch:
+ *     summary: Leave a karaoke room
+ *     tags: [Rooms]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - roomId
+ *             properties:
+ *               userId:
+ *                 type: integer
+ *                 example: 1
+ *               roomId:
+ *                 type: integer
+ *                 example: 1
+
+ *     responses:
+ *       201:
+ *         description: Room deleted successfully
+ *       400:
+ *         description: Bad request
+ */
+router.patch("/rooms/leave", (req, res) => roomController.leaveRoom(req, res));
 
 export const roomRouter = router;

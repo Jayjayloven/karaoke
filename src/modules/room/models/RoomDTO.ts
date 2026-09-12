@@ -13,3 +13,8 @@ export interface JoinRoomReq {
   roomId: number;
   roomCode: string;
 }
+
+export interface LeaveRoomReq {
+  userId: string;
+  roomId: number;
+}
