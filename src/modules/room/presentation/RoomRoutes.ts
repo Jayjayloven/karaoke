@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { RoomRepository } from "../infrastructure/RoomRepository.js";
 import { CreateRoomUseCase } from "../application/CreateRoomUseCase.js";
-import { dbPool } from "../../../shared/core/postgress.js";
+import { dbPool } from "../../../shared/core/postgres.js";
 import { RoomController } from "./RoomController.js";
 import { DeleteRoomUseCase } from "../application/DeleteRoomUseCase.js";
 import { JoinRoomUseCase } from "../application/JoinRoomUseCase.js";

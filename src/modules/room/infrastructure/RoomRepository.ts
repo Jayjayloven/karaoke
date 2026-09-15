@@ -1,4 +1,4 @@
-import type { PostgresDbPool } from "../../../shared/core/postgress.js";
+import type { PostgresDbPool } from "../../../shared/core/postgres.js";
 import { Room } from "../domain/Room.js";
 
 export class NotFoundError extends Error {
