@@ -1,21 +1,13 @@
 import { Router } from "express";
-import { RoomRepository } from "../infrastructure/RoomRepository.js";
-import { CreateRoomUseCase } from "../application/CreateRoomUseCase.js";
-import { dbPool } from "../../../shared/core/postgres.js";
 import { RoomController } from "./RoomController.js";
-import { DeleteRoomUseCase } from "../application/DeleteRoomUseCase.js";
-import { JoinRoomUseCase } from "../application/JoinRoomUseCase.js";
-import { LeaveRoomUseCase } from "../application/LeaveRoomUseCase.js";
+import {
+  createRoomUseCase,
+  deleteRoomUseCase,
+  joinRoomUseCase,
+  leaveRoomUseCase,
+} from "../../../shared/core/dependencies.js";
 
 const router = Router();
-
-const roomRepository = new RoomRepository(dbPool);
-
-const createRoomUseCase = new CreateRoomUseCase(roomRepository);
-const deleteRoomUseCase = new DeleteRoomUseCase(roomRepository);
-const joinRoomUseCase = new JoinRoomUseCase(roomRepository);
-const leaveRoomUseCase = new LeaveRoomUseCase(roomRepository, userRepository); 
-// TODO: create userRepository and a dependency injection file for all the useCases
 
 const roomController = new RoomController(
   createRoomUseCase,
