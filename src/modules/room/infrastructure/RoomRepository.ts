@@ -16,11 +16,7 @@ export class UnauthorizedError extends Error {
 }
 
 export class RoomRepository {
-  private readonly dbPool: PostgresDbPool;
-
-  constructor(dbPool: PostgresDbPool) {
-    this.dbPool = dbPool;
-  }
+  constructor(private readonly dbPool: PostgresDbPool) {}
 
   public async findById(id: number): Promise<Room | null> {
     const query = `SELECT * FROM rooms WHERE id = $1`;

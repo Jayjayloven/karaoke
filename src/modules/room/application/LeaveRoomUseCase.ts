@@ -1,5 +1,5 @@
-import type { IRoomRepository } from "../models/IRoomRepository.js";
 import type { IUserRepository } from "../../user/models/IUserRepository.js";
+import type { IRoomRepository } from "../models/IRoomRepository.js";
 import type { LeaveRoomReq } from "../models/RoomDTO.js";
 
 export class LeaveRoomUseCase {
@@ -9,24 +9,26 @@ export class LeaveRoomUseCase {
   ) {}
 
   public async execute(data: LeaveRoomReq): Promise<void> {
+    const leavingUser = await this.userRepo.findUserById(data.userId);
+    if (!leavingUser) {
+      throw new Error(`User with ID ${data.userId} not found.`);
+    }
+
     const room = await this.roomRepo.findById(data.roomId);
     if (!room) {
       throw new Error(`Room with ID ${data.roomId} not found.`);
     }
 
-    // 1. Fetch users currently in this room via UserRepo
     const roomUsers = await this.userRepo.findUsersByRoomId(data.roomId);
 
-    const nextUser = roomUsers.find(
-      (user) => Number.parseInt(user.id) !== data.userId,
-    );
-    const inheritingHostId = nextUser ? Number.parseInt(nextUser.id) : null;
+    const nextUser = roomUsers.find((user) => user.getUserId() !== data.userId);
+    const inheritingHostId = nextUser
+      ? Number.parseInt(nextUser.getUserId())
+      : null;
 
-    // 2. Domain Entity changes state (host transfer or closing)
-    room.leaveRoom(data.userId, inheritingHostId);
+    room.leaveRoom(Number(data.userId), inheritingHostId);
 
     await this.roomRepo.updateRoom(room);
-
-    await this.userRepo.clearRoomId(data.userId);
+    leavingUser.clearRoomId();
   }
 }

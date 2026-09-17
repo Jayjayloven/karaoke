@@ -1,13 +1,13 @@
 // src/shared/core/dependencies.ts
 import { dbPool } from "./postgres.js";
 
-import { UserRepository } from "../../modules/user/infrastructure/UserRepository.js";
 import { RoomRepository } from "../../modules/room/infrastructure/RoomRepository.js";
 import { WebSocketConnectionManager } from "../../modules/room/infrastructure/WebSocketConnectionManager.js";
 import { LeaveRoomUseCase } from "../../modules/room/application/LeaveRoomUseCase.js";
 import { CreateRoomUseCase } from "../../modules/room/application/CreateRoomUseCase.js";
 import { DeleteRoomUseCase } from "../../modules/room/application/DeleteRoomUseCase.js";
 import { JoinRoomUseCase } from "../../modules/room/application/JoinRoomUseCase.js";
+import { UserRepository } from "../../modules/user/infrastructure/UserRepository.js";
 
 // Infrastructure
 export const userRepository = new UserRepository(dbPool);
