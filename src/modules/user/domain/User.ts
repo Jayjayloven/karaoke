@@ -21,7 +21,7 @@ export class User {
     this.roomId = null;
   }
 
-  public changeRoomId(newRoomId: number): void {
+  public changeRoomId(newRoomId: number | null): void {
     this.roomId = newRoomId;
   }
 }

@@ -33,4 +33,13 @@ export class UserRepository {
 
     return new User(user.id, user.username, user.room_id);
   }
+
+  public async updateUser(user: User) {
+    const query = `UPDATE users SET username = $1, room_id = $2`;
+    const values = [user.getUsername(), user.getRoomId()];
+
+    const result = await this.dbPool.query(query, values);
+
+    return result.rowCount !== null && result.rowCount > 0;
+  }
 }

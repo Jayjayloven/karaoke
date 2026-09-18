@@ -1,9 +1,14 @@
+import type { User } from "../../user/domain/User.js";
+import type { IUserRepository } from "../../user/models/IUserRepository.js";
 import type { IRoomRepository } from "../models/IRoomRepository.js";
 import type { DeleteRoomReq } from "../models/RoomDTO.js";
 
 // TODO: change to a soft delete
 export class DeleteRoomUseCase {
-  constructor(private readonly roomRepo: IRoomRepository) {}
+  constructor(
+    private readonly roomRepo: IRoomRepository,
+    private readonly userRepo: IUserRepository,
+  ) {}
 
   public async execute(data: DeleteRoomReq): Promise<boolean> {
     const room = await this.roomRepo.findById(data.roomId);
@@ -14,7 +19,12 @@ export class DeleteRoomUseCase {
 
     room.verifyOwnership(data.userId);
 
+    const usersInRoom = await this.userRepo.findUsersByRoomId(data.roomId);
+    usersInRoom.forEach(async (user: User) => {
+      user.changeRoomId(null);
+      await this.userRepo.updateUser(user);
+    });
+
     return await this.roomRepo.deleteRoom(room.getId());
   }
-  //TODO: when a host leaves a room they need to close the room if no one else is in the room or make whoever joined second the room host
 }
