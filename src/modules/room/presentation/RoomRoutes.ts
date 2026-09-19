@@ -60,7 +60,7 @@ router.post("/rooms", (req, res) => roomController.createRoom(req, res));
  *             type: object
  *             required:
  *               - roomId
- *               - userId
+ *               - hostId
  *             properties:
  *               roomId:
  *                 type: integer
@@ -112,7 +112,7 @@ router.patch("/rooms", (req, res) => roomController.joinRoom(req, res));
 
 /**
  * @swagger
- * /rooms:
+ * /rooms/leave:
  *   patch:
  *     summary: Leave a karaoke room
  *     tags: [Rooms]

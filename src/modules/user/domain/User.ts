@@ -13,8 +13,8 @@ export class User {
     return this.username;
   }
 
-  public getRoomId(): number {
-    return Number(this.roomId);
+  public getRoomId(): number | null {
+    return this.roomId;
   }
 
   public clearRoomId(): void {

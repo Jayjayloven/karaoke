@@ -29,10 +29,13 @@ export class DeleteRoomUseCase {
     room.verifyOwnership(data.hostId);
 
     const usersInRoom = await this.userRepo.findUsersByRoomId(data.roomId);
-    usersInRoom.forEach(async (user: User) => {
-      user.changeRoomId(null);
-      await this.userRepo.updateUser(user);
-    });
+
+    await Promise.all(
+      usersInRoom.map(async (user: User) => {
+        user.clearRoomId();
+        await this.userRepo.updateUser(user);
+      }),
+    );
 
     this.webSocketManager.broadcastToRoom(data.roomId, {
       action: RoomWebSocketAction.ROOM_CLOSED,

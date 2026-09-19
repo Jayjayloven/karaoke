@@ -33,7 +33,7 @@ export class CreateRoomUseCase {
     host.changeRoomId(roomId);
     await this.userRepo.updateUser(host);
 
-    this.webSocketManager.broadcastToRoom(newRoom.getId(), {
+    this.webSocketManager.broadcastToRoom(savedRoom.getId(), {
       action: RoomWebSocketAction.ROOM_CREATED,
       userId: data.hostId,
       message: `${host.getUsername()} has created the room: ${newRoom.getRoomName()}`,
