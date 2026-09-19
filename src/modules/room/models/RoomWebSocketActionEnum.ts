@@ -1,0 +1,6 @@
+export enum RoomWebSocketAction{
+    USER_JOINED = "USER_JOINED",
+    USER_LEFT = "USER_LEFT",
+    ROOM_CLOSED = "ROOM_CLOSED",
+    ROOM_CREATED = "ROOM_CREATED"
+}

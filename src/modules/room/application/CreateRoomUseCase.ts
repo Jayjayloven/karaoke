@@ -3,11 +3,14 @@ import { Room } from "../domain/Room.js";
 import type { CreateRoomReq } from "../models/RoomDTO.js";
 import { RoomStatusEnum } from "../models/RoomStatus.js";
 import type { IUserRepository } from "../../user/models/IUserRepository.js";
+import type { WebSocketConnectionManager } from "../../../shared/core/WebSocketConnectionManager.js";
+import { RoomWebSocketAction } from "../models/RoomWebSocketActionEnum.js";
 
 export class CreateRoomUseCase {
   constructor(
     private readonly roomRepo: IRoomRepository,
     private readonly userRepo: IUserRepository,
+    private readonly webSocketManager: WebSocketConnectionManager,
   ) {}
 
   public async execute(data: CreateRoomReq): Promise<Room> {
@@ -29,6 +32,12 @@ export class CreateRoomUseCase {
 
     host.changeRoomId(roomId);
     await this.userRepo.updateUser(host);
+
+    this.webSocketManager.broadcastToRoom(newRoom.getId(), {
+      action: RoomWebSocketAction.ROOM_CREATED,
+      userId: data.hostId,
+      message: `${host.getUsername()} has created the room: ${newRoom.getRoomName()}`,
+    });
 
     return savedRoom;
   }

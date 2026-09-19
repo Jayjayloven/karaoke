@@ -2,7 +2,7 @@
 import { dbPool } from "./postgres.js";
 
 import { RoomRepository } from "../../modules/room/infrastructure/RoomRepository.js";
-import { WebSocketConnectionManager } from "../../modules/room/infrastructure/WebSocketConnectionManager.js";
+import { WebSocketConnectionManager } from "./WebSocketConnectionManager.js";
 import { LeaveRoomUseCase } from "../../modules/room/application/LeaveRoomUseCase.js";
 import { CreateRoomUseCase } from "../../modules/room/application/CreateRoomUseCase.js";
 import { DeleteRoomUseCase } from "../../modules/room/application/DeleteRoomUseCase.js";
@@ -15,10 +15,23 @@ export const roomRepository = new RoomRepository(dbPool);
 export const webSocketManager = new WebSocketConnectionManager();
 
 // Application Layer
-export const createRoomUseCase = new CreateRoomUseCase(roomRepository);
-export const deleteRoomUseCase = new DeleteRoomUseCase(roomRepository);
-export const joinRoomUseCase = new JoinRoomUseCase(roomRepository);
+export const createRoomUseCase = new CreateRoomUseCase(
+  roomRepository,
+  userRepository,
+  webSocketManager,
+);
+export const deleteRoomUseCase = new DeleteRoomUseCase(
+  roomRepository,
+  userRepository,
+  webSocketManager,
+);
+export const joinRoomUseCase = new JoinRoomUseCase(
+  roomRepository,
+  userRepository,
+  webSocketManager,
+);
 export const leaveRoomUseCase = new LeaveRoomUseCase(
   roomRepository,
   userRepository,
+  webSocketManager,
 );

@@ -5,7 +5,7 @@ export interface CreateRoomReq {
 
 export interface DeleteRoomReq {
   roomId: number;
-  userId: number;
+  hostId: number;
 }
 
 export interface JoinRoomReq {
