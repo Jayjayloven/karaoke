@@ -17,6 +17,7 @@ export class User {
     return this.roomId;
   }
 
+
   public clearRoomId(): void {
     this.roomId = null;
   }
@@ -26,4 +27,3 @@ export class User {
   }
 }
 
-// todo when a user creates/leaves/joins a room the users id needs to be set

@@ -8,13 +8,14 @@ import { CreateRoomUseCase } from "../../modules/room/application/CreateRoomUseC
 import { DeleteRoomUseCase } from "../../modules/room/application/DeleteRoomUseCase.js";
 import { JoinRoomUseCase } from "../../modules/room/application/JoinRoomUseCase.js";
 import { UserRepository } from "../../modules/user/infrastructure/UserRepository.js";
+import { CreateUserUseCase } from "../../modules/user/application/CreateUserUseCase.js";
 
 // Infrastructure
 export const userRepository = new UserRepository(dbPool);
 export const roomRepository = new RoomRepository(dbPool);
 export const webSocketManager = new WebSocketConnectionManager();
 
-// Application Layer
+// Room Use Cases
 export const createRoomUseCase = new CreateRoomUseCase(
   roomRepository,
   userRepository,
@@ -35,3 +36,6 @@ export const leaveRoomUseCase = new LeaveRoomUseCase(
   userRepository,
   webSocketManager,
 );
+
+// User Use Cases
+export const createUserUseCase = new CreateUserUseCase(userRepository);
