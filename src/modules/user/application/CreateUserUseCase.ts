@@ -6,7 +6,12 @@ export class CreateUserUseCase {
   constructor(private readonly userRepo: IUserRepository) {}
 
   public async execute(data: CreateUserReq): Promise<User> {
-    const savedUser = await this.userRepo.createUser(data.username);
-    return savedUser;
+    const newUser = await this.userRepo.createUser(data.username);
+    if (!newUser) {
+      throw new Error(
+        `Trying to create user with name ${data.username} failed.`,
+      );
+    }
+    return newUser;
   }
 }

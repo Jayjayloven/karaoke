@@ -1,7 +1,7 @@
 export class User {
   constructor(
     private readonly userId: string,
-    private readonly username: string,
+    private username: string,
     private roomId: number | null,
   ) {}
 
@@ -13,10 +13,13 @@ export class User {
     return this.username;
   }
 
+  public changeUsername(newUsername: string): void {
+    this.username = newUsername;
+  }
+
   public getRoomId(): number | null {
     return this.roomId;
   }
-
 
   public clearRoomId(): void {
     this.roomId = null;
@@ -26,4 +29,3 @@ export class User {
     this.roomId = newRoomId;
   }
 }
-

@@ -1,3 +1,8 @@
 export interface CreateUserReq {
-    username: string
+  username: string;
+}
+
+export interface UpdateUsernameReq {
+  userId: string;
+  username: string;
 }

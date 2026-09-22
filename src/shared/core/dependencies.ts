@@ -9,6 +9,7 @@ import { DeleteRoomUseCase } from "../../modules/room/application/DeleteRoomUseC
 import { JoinRoomUseCase } from "../../modules/room/application/JoinRoomUseCase.js";
 import { UserRepository } from "../../modules/user/infrastructure/UserRepository.js";
 import { CreateUserUseCase } from "../../modules/user/application/CreateUserUseCase.js";
+import { UpdateUsernameUseCase } from "../../modules/user/application/UpdateUsernameUseCase.js";
 
 // Infrastructure
 export const userRepository = new UserRepository(dbPool);
@@ -39,3 +40,4 @@ export const leaveRoomUseCase = new LeaveRoomUseCase(
 
 // User Use Cases
 export const createUserUseCase = new CreateUserUseCase(userRepository);
+export const updateUsernameUseCase = new UpdateUsernameUseCase(userRepository);
