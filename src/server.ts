@@ -1,4 +1,3 @@
-// src/server.ts
 import { createServer } from "node:http";
 import { WebSocketServer } from "ws";
 import app from "./app.js"; // Import your configured Express app

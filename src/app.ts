@@ -4,8 +4,16 @@ import swaggerUi from "swagger-ui-express";
 import { roomRouter } from "./modules/room/presentation/RoomRoutes.js";
 import { swaggerSpec } from "./shared/core/swagger.js";
 import { userRouter } from "./modules/user/presentation/UserRoutes.js";
+import cors from "cors";
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  }),
+);
 
 // Middleware
 app.use(express.json());
