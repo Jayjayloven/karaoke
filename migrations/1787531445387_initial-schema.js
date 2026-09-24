@@ -92,8 +92,8 @@ export const up = (pgm) => {
       onDelete: "cascade",
     },
     song_name: { type: "varchar(255)", notNull: true },
-    artist: { type: "varchar(255)" },
-    is_played: { type: "boolean", default: false },
+    media_url: {type: "varchar(255)"},
+    has_played: { type: "boolean", default: false },
     created_at: {
       type: "timestamp",
       notNull: true,
