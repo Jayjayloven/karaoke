@@ -1,6 +1,7 @@
 import type { WebSocketConnectionManager } from "../../../shared/core/WebSocketConnectionManager.js";
 import type { RoomRepository } from "../../room/infrastructure/RoomRepository.js";
 import type { UserRepository } from "../../user/infrastructure/UserRepository.js";
+import type { SongEntry } from "../domain/SongEntry.js";
 import { SongEntryWebSocketAction } from "../models/SongEntryWebSocketActionEnum.js";
 import type { QueueSongReq } from "../models/SongQueueDTO.js";
 import type { SongQueueRepository } from "../repository/SongQueueRepository.js";
@@ -13,7 +14,7 @@ export class QueueSongUseCase {
     private readonly webSocketManager: WebSocketConnectionManager,
   ) {}
 
-  public async execute(data: QueueSongReq) {
+  public async execute(data: QueueSongReq): Promise<SongEntry> {
     const { userId, roomId, songName, mediaUrl } = data;
 
     const user = await this.userRepo.findUserById(String(userId));
@@ -23,13 +24,13 @@ export class QueueSongUseCase {
       );
     }
 
-    const room = await this.roomRepo.findById(roomId);
+    const room = await this.roomRepo.findRoomById(roomId);
     if (!room) {
       throw new Error(`Cannot add song entry. Room ${roomId} does not exist.`);
     }
 
     const savedSongEntry = await this.songQueueRepo.queueSong(
-      userId,
+      Number(userId),
       roomId,
       songName,
       mediaUrl,

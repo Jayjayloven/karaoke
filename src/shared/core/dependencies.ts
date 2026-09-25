@@ -12,12 +12,21 @@ import { CreateUserUseCase } from "../../modules/user/application/CreateUserUseC
 import { UpdateUsernameUseCase } from "../../modules/user/application/UpdateUsernameUseCase.js";
 import { SongQueueRepository } from "../../modules/song-queue/repository/SongQueueRepository.js";
 import { QueueSongUseCase } from "../../modules/song-queue/application/QueueSongUseCase.js";
+import { RequestValidators } from "../RequestValidators.js";
+import { RemoveSongFromQueueUseCase } from "../../modules/song-queue/application/RemoveSongFromQueueUseCase.js";
 
 // Infrastructure
 export const roomRepository = new RoomRepository(dbPool);
 export const songQueueRepository = new SongQueueRepository(dbPool);
 export const userRepository = new UserRepository(dbPool);
 export const webSocketManager = new WebSocketConnectionManager();
+
+// Validator
+export const requestValidators = new RequestValidators(
+  songQueueRepository,
+  userRepository,
+  roomRepository,
+);
 
 // Room Use Cases
 export const createRoomUseCase = new CreateRoomUseCase(
@@ -47,6 +56,12 @@ export const queueSongUseCase = new QueueSongUseCase(
   userRepository,
   roomRepository,
   webSocketManager,
+);
+
+export const removeSongFromQueueUseCase = new RemoveSongFromQueueUseCase(
+  songQueueRepository,
+  webSocketManager,
+  requestValidators,
 );
 
 // User Use Cases

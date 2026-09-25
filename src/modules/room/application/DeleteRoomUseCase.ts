@@ -14,7 +14,7 @@ export class DeleteRoomUseCase {
   ) {}
 
   public async execute(data: DeleteRoomReq): Promise<boolean> {
-    const room = await this.roomRepo.findById(data.roomId);
+    const room = await this.roomRepo.findRoomById(data.roomId);
     if (!room) {
       throw new Error(`Room with ID ${data.roomId} not found.`);
     }
@@ -26,7 +26,7 @@ export class DeleteRoomUseCase {
       );
     }
 
-    room.verifyOwnership(data.hostId);
+    room.validateOwnership(data.hostId);
 
     const usersInRoom = await this.userRepo.findUsersByRoomId(data.roomId);
 

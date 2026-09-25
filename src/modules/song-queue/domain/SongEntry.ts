@@ -19,17 +19,21 @@ export class SongEntry {
     };
   }
 
-  public changeSong(songName: string, mediaUrl: string) {
+  public changeSong(songName: string, mediaUrl: string): void {
     this.songName = songName;
     this.mediaUrl = mediaUrl;
   }
 
-  public markAsPlayed() {
+  public markAsPlayed(): void {
     if (this.hasPlayed) {
       throw new Error(
         "Cannot mark song as played: this song has already finished.",
       );
     }
     this.hasPlayed = true;
+  }
+
+  public isRequester(userId: string): boolean {
+    return this.userId === Number(userId);
   }
 }

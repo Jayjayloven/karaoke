@@ -1,10 +1,16 @@
 import { Router } from "express";
 import { SongQueueController } from "./SongQueueController.js";
-import { queueSongUseCase } from "../../../shared/core/dependencies.js";
+import {
+  queueSongUseCase,
+  removeSongFromQueueUseCase,
+} from "../../../shared/core/dependencies.js";
 
 const router = Router();
 
-const songQueueController = new SongQueueController(queueSongUseCase);
+const songQueueController = new SongQueueController(
+  queueSongUseCase,
+  removeSongFromQueueUseCase,
+);
 
 /**
  * @swagger
@@ -42,4 +48,42 @@ const songQueueController = new SongQueueController(queueSongUseCase);
  *       400:
  *         description: Bad request
  */
-router.post("/rooms", (req, res) => songQueueController.queueSong(req, res));
+router.post("/song-queue", (req, res) =>
+  songQueueController.queueSong(req, res),
+);
+
+/**
+ * @swagger
+ * /sonq-queue:
+ *   delete:
+ *     summary: Delete a song from the queue of your karaoke room
+ *     tags: [Song-Queue]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - roomId
+ *               - songId
+ *             properties:
+ *               userId:
+ *                 type: number
+ *                 example: 1
+ *               roomId:
+ *                 type: integer
+ *                 example: 1
+ *               songId:
+ *                 type: string
+ *                 example:
+ *     responses:
+ *       201:
+ *         description: Song removed successfully
+ *       400:
+ *         description: Bad request
+ */
+router.delete("/song-queue", (req, res) =>
+  songQueueController.removeQueuedSong(req, res),
+);
