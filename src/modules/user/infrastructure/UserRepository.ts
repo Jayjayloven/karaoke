@@ -19,7 +19,7 @@ export class UserRepository {
     return new User(row.id, row.username, row.room_id);
   }
 
-  public async findUsersByRoomId(roomId: number): Promise<User[]> {
+  public async findUsersByRoomId(roomId: string): Promise<User[]> {
     const query = `SELECT * FROM users WHERE room_id = $1`;
     const result = await this.dbPool.query(query, [roomId]);
 

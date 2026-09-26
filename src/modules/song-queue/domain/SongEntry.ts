@@ -1,8 +1,8 @@
 export class SongEntry {
   constructor(
     private readonly id: string,
-    private readonly roomId: number,
-    private readonly userId: number,
+    private readonly roomId: string,
+    private readonly userId: string,
     private songName: string,
     private mediaUrl: string,
     private hasPlayed: boolean,
@@ -34,6 +34,6 @@ export class SongEntry {
   }
 
   public isRequester(userId: string): boolean {
-    return this.userId === Number(userId);
+    return this.userId === userId;
   }
 }

@@ -25,9 +25,9 @@ export class LeaveRoomUseCase {
 
     const nextUser = roomUsers.find((user) => user.getUserId() !== data.userId);
 
-    const inheritingHostId = nextUser ? Number(nextUser.getUserId()) : null;
+    const inheritingHostId = nextUser ? nextUser.getUserId() : null;
 
-    room.leaveRoom(Number(data.userId), inheritingHostId);
+    room.leaveRoom(data.userId, inheritingHostId);
     leavingUser.clearRoomId();
 
     let updateInheritingHostResult = true;

@@ -1,9 +1,9 @@
 import { WebSocket } from "ws";
 
 export class WebSocketConnectionManager {
-  private rooms: Map<number, Set<WebSocket>> = new Map();
+  private rooms: Map<string, Set<WebSocket>> = new Map();
 
-  public addClient(roomId: number, ws: WebSocket): void {
+  public addClient(roomId: string, ws: WebSocket): void {
     if (!this.rooms.has(roomId)) {
       this.rooms.set(roomId, new Set<WebSocket>());
     }
@@ -11,7 +11,7 @@ export class WebSocketConnectionManager {
     this.rooms.get(roomId)!.add(ws);
   }
 
-  public removeClient(roomId: number, ws: WebSocket): void {
+  public removeClient(roomId: string, ws: WebSocket): void {
     const room = this.rooms.get(roomId);
     if (!room) return;
 
@@ -22,7 +22,7 @@ export class WebSocketConnectionManager {
     }
   }
 
-  public broadcastToRoom(roomId: number, message: any): void {
+  public broadcastToRoom(roomId: string, message: any): void {
     const room = this.rooms.get(roomId);
     if (!room) return;
 

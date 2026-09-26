@@ -1,20 +1,20 @@
 export interface CreateRoomReq {
   roomName: string;
-  hostId: number;
+  hostId: string;
 }
 
 export interface DeleteRoomReq {
-  roomId: number;
-  hostId: number;
+  roomId: string;
+  hostId: string;
 }
 
 export interface JoinRoomReq {
   userId: string;
-  roomId: number;
+  roomId: string;
   roomCode: string;
 }
 
 export interface LeaveRoomReq {
   userId: string;
-  roomId: number;
+  roomId: string;
 }

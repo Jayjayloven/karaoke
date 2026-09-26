@@ -12,7 +12,7 @@ export class JoinRoomUseCase {
   ) {}
 
   public async execute(data: JoinRoomReq): Promise<boolean> {
-    const requestedRoom = await this.roomRepo.findById(data.roomId);
+    const requestedRoom = await this.roomRepo.findRoomById(data.roomId);
     if (!requestedRoom) {
       throw new Error(`Room with ID ${data.roomId} not found.`);
     }

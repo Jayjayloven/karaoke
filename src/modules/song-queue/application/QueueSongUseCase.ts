@@ -30,7 +30,7 @@ export class QueueSongUseCase {
     }
 
     const savedSongEntry = await this.songQueueRepo.queueSong(
-      Number(userId),
+      userId,
       roomId,
       songName,
       mediaUrl,

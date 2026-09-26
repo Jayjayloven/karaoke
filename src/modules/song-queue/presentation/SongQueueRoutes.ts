@@ -14,7 +14,7 @@ const songQueueController = new SongQueueController(
 
 /**
  * @swagger
- * /sonq-queue:
+ * /song-queue:
  *   post:
  *     summary: Queue a song for your karaoke room
  *     tags: [Song-Queue]
@@ -31,8 +31,8 @@ const songQueueController = new SongQueueController(
  *               - mediaUrl
  *             properties:
  *               userId:
- *                 type: number
- *                 example: 1
+ *                 type: string
+ *                 example: "1"
  *               roomId:
  *                 type: integer
  *                 example: 1
@@ -54,7 +54,7 @@ router.post("/song-queue", (req, res) =>
 
 /**
  * @swagger
- * /sonq-queue:
+ * /song-queue:
  *   delete:
  *     summary: Delete a song from the queue of your karaoke room
  *     tags: [Song-Queue]
@@ -70,8 +70,8 @@ router.post("/song-queue", (req, res) =>
  *               - songId
  *             properties:
  *               userId:
- *                 type: number
- *                 example: 1
+ *                 type: string
+ *                 example: "1"
  *               roomId:
  *                 type: integer
  *                 example: 1
@@ -87,3 +87,5 @@ router.post("/song-queue", (req, res) =>
 router.delete("/song-queue", (req, res) =>
   songQueueController.removeQueuedSong(req, res),
 );
+
+export const songQueueRouter = router;

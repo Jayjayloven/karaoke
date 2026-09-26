@@ -21,7 +21,7 @@ export class RemoveSongFromQueueUseCase {
     );
 
     const isValidRequester =
-      room.isRoomHost(Number(data.userId)) ||
+      room.isRoomHost(data.userId) ||
       songEntry.isRequester(data.userId);
 
     if (!isValidRequester) {

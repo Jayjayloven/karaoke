@@ -2,7 +2,7 @@ export class User {
   constructor(
     private readonly userId: string,
     private username: string,
-    private roomId: number | null,
+    private roomId: string | null,
   ) {}
 
   public getUserId(): string {
@@ -17,7 +17,7 @@ export class User {
     this.username = newUsername;
   }
 
-  public getRoomId(): number | null {
+  public getRoomId(): string | null {
     return this.roomId;
   }
 
@@ -25,7 +25,7 @@ export class User {
     this.roomId = null;
   }
 
-  public changeRoomId(newRoomId: number | null): void {
+  public changeRoomId(newRoomId: string | null): void {
     this.roomId = newRoomId;
   }
 }

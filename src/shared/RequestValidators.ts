@@ -20,7 +20,7 @@ export class RequestValidators {
     return user;
   }
 
-  public async doesRoomExist(roomId: number): Promise<Room> {
+  public async doesRoomExist(roomId: string): Promise<Room> {
     const room = await this.roomRepo.findRoomById(roomId);
     if (!room) {
       throw new Error(`Room with ID ${roomId} not found.`);

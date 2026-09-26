@@ -1,12 +1,12 @@
 export interface QueueSongReq {
   userId: string;
-  roomId: number;
+  roomId: string;
   songName: string;
   mediaUrl: string;
 }
 
 export interface RemoveSongFromQueueReq {
   userId: string;
-  roomId: number;
+  roomId: string;
   songId: string;
 }

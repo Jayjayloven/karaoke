@@ -31,7 +31,11 @@ export const up = (pgm) => {
   `);
 
   pgm.createTable("users", {
-    id: "id",
+    id: {
+      type: "uuid",
+      primaryKey: true,
+      default: pgm.func("gen_random_uuid()")
+    },
     username: { type: "varchar(100)", notNull: true },
     created_at: {
       type: "timestamp",
@@ -42,7 +46,11 @@ export const up = (pgm) => {
 
   // 3. Create Rooms Table
   pgm.createTable("rooms", {
-    id: "id",
+    id: {
+      type: "uuid",
+      primaryKey: true,
+      default: pgm.func("gen_random_uuid()")
+    },
     room_name: { type: "varchar(100)", notNull: true },
     room_code: {
       type: "varchar(10)",
@@ -51,7 +59,7 @@ export const up = (pgm) => {
       default: pgm.func("generate_unique_room_code()"),
     },
     host_id: {
-      type: "integer",
+      type: "uuid",
       notNull: true,
       references: '"users"',
       onDelete: "cascade",
@@ -71,22 +79,26 @@ export const up = (pgm) => {
 
   pgm.addColumn("users", {
     room_id: {
-      type: "integer",
+      type: "uuid",
       references: '"rooms"',
       onDelete: "SET NULL",
     },
   });
 
   pgm.createTable("song_queue", {
-    id: "id",
+    id: {
+      type: "uuid",
+      primaryKey: true,
+      default: pgm.func("gen_random_uuid()")
+    },
     room_id: {
-      type: "integer",
+      type: "uuid",
       notNull: true,
       references: '"rooms"',
       onDelete: "cascade",
     },
     user_id: {
-      type: "integer",
+      type: "uuid",
       notNull: true,
       references: '"users"',
       onDelete: "cascade",

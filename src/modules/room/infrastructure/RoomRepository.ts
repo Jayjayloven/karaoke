@@ -18,7 +18,7 @@ export class UnauthorizedError extends Error {
 export class RoomRepository {
   constructor(private readonly dbPool: PostgresDbPool) {}
 
-  public async findRoomById(id: number): Promise<Room | null> {
+  public async findRoomById(id: string): Promise<Room | null> {
     const query = `SELECT * FROM rooms WHERE id = $1`;
     const result = await this.dbPool.query(query, [id]);
 
@@ -59,14 +59,13 @@ export class RoomRepository {
     );
   }
 
-  // The delete method becomes dead simple:
-  public async deleteRoom(roomId: number): Promise<boolean> {
+  public async deleteRoom(roomId: string): Promise<boolean> {
     const query = `DELETE FROM rooms WHERE id = $1`;
     const result = await this.dbPool.query(query, [roomId]);
     return result.rowCount !== null && result.rowCount > 0;
   }
 
-  public async joinRoom(userId: string, roomId: number): Promise<boolean> {
+  public async joinRoom(userId: string, roomId: string): Promise<boolean> {
     const query = `UPDATE users SET room_id = $1 WHERE id = $2`;
 
     const values = [roomId, userId];

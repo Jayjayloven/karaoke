@@ -16,12 +16,7 @@ httpServer.on("upgrade", (request, socket, head) => {
   // Only handle connections trying to reach a specific room
   if (url.pathname.startsWith("/ws/rooms/")) {
     const pathParts = url.pathname.split("/");
-    const roomId = Number.parseInt(pathParts[3]!);
-
-    if (Number.isNaN(roomId)) {
-      socket.destroy();
-      return;
-    }
+    const roomId = pathParts[3]!;
 
     // Complete handshake and pass to the Switchboard
     wss.handleUpgrade(request, socket, head, (ws) => {

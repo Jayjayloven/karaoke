@@ -5,8 +5,8 @@ export class SongQueueRepository {
   constructor(private readonly dbPool: PostgresDbPool) {}
 
   public async queueSong(
-    userId: number,
-    roomId: number,
+    userId: string,
+    roomId: string,
     songName: string,
     mediaUrl: string,
   ) {
@@ -46,11 +46,11 @@ export class SongQueueRepository {
     const row = result.rows[0];
     return new SongEntry(
       row.id,
-      row.roomId,
-      row.userId,
-      row.songName,
-      row.mediaUrl,
-      row.hasPlayed,
+      row.room_id,
+      row.user_id,
+      row.song_name,
+      row.media_url,
+      row.has_played,
     );
   }
 }
