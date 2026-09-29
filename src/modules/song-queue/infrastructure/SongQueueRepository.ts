@@ -53,4 +53,19 @@ export class SongQueueRepository {
       row.has_played,
     );
   }
+
+  public async updateQueuedSong(
+    songId: string,
+    songName: string,
+    mediaUrl: string,
+  ) {
+    const query = `
+    UPDATE song_queue SET songName = $1, mediaUrl = $2 
+    WHERE id = $3`;
+    const values = [songName, mediaUrl, songId];
+
+    const result = await this.dbPool.query(query, values);
+
+    return result.rowCount !== null && result.rowCount > 0;
+  }
 }

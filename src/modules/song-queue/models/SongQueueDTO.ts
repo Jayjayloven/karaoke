@@ -10,3 +10,11 @@ export interface RemoveSongFromQueueReq {
   roomId: string;
   songId: string;
 }
+
+export interface EditSongEntryReq {
+  userId: string;
+  roomId: string;
+  songId: string;
+  songName: string;
+  mediaUrl: string;
+}

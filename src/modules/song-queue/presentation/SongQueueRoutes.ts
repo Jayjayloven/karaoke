@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { SongQueueController } from "./SongQueueController.js";
 import {
+  editQueuedSongUseCase,
   queueSongUseCase,
   removeSongFromQueueUseCase,
 } from "../../../shared/core/dependencies.js";
@@ -10,6 +11,7 @@ const router = Router();
 const songQueueController = new SongQueueController(
   queueSongUseCase,
   removeSongFromQueueUseCase,
+  editQueuedSongUseCase,
 );
 
 /**
@@ -50,6 +52,50 @@ const songQueueController = new SongQueueController(
  */
 router.post("/song-queue", (req, res) =>
   songQueueController.queueSong(req, res),
+);
+
+/**
+ * @swagger
+ * /song-queue:
+ *   put:
+ *     summary: Edot a song queued for your karaoke room
+ *     tags: [Song-Queue]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - roomId
+ *               - songId
+ *               - songName
+ *               - mediaUrl
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 example: "1"
+ *               roomId:
+ *                 type: string
+ *                 example: "1"
+ *               songId:
+ *                 type: string
+ *                 example: "1"
+ *               songName:
+ *                 type: string
+ *                 example: "Happiness"
+ *               mediaUrl:
+ *                 type: string
+ *                 example: "https://youtu.be/sDB-MzOYgN4?si=Bc-zHSFu3xuY7063"
+ *     responses:
+ *       201:
+ *         description: Song updated successfully
+ *       400:
+ *         description: Bad request
+ */
+router.put("/song-queue", (req, res) =>
+  songQueueController.editQueuedSong(req, res),
 );
 
 /**

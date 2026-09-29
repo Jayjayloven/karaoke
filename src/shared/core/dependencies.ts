@@ -10,10 +10,11 @@ import { JoinRoomUseCase } from "../../modules/room/application/JoinRoomUseCase.
 import { UserRepository } from "../../modules/user/infrastructure/UserRepository.js";
 import { CreateUserUseCase } from "../../modules/user/application/CreateUserUseCase.js";
 import { UpdateUsernameUseCase } from "../../modules/user/application/UpdateUsernameUseCase.js";
-import { SongQueueRepository } from "../../modules/song-queue/repository/SongQueueRepository.js";
+import { SongQueueRepository } from "../../modules/song-queue/infrastructure/SongQueueRepository.js";
 import { QueueSongUseCase } from "../../modules/song-queue/application/QueueSongUseCase.js";
 import { RequestValidators } from "../RequestValidators.js";
 import { RemoveSongFromQueueUseCase } from "../../modules/song-queue/application/RemoveSongFromQueueUseCase.js";
+import { EditQueuedSongUseCase } from "../../modules/song-queue/application/EditQueuedSongUseCase.js";
 
 // Infrastructure
 export const roomRepository = new RoomRepository(dbPool);
@@ -59,6 +60,12 @@ export const queueSongUseCase = new QueueSongUseCase(
 );
 
 export const removeSongFromQueueUseCase = new RemoveSongFromQueueUseCase(
+  songQueueRepository,
+  webSocketManager,
+  requestValidators,
+);
+
+export const editQueuedSongUseCase = new EditQueuedSongUseCase(
   songQueueRepository,
   webSocketManager,
   requestValidators,

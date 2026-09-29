@@ -1,7 +1,7 @@
 import type { Room } from "../modules/room/domain/Room.js";
 import type { RoomRepository } from "../modules/room/infrastructure/RoomRepository.js";
 import type { SongEntry } from "../modules/song-queue/domain/SongEntry.js";
-import type { SongQueueRepository } from "../modules/song-queue/repository/SongQueueRepository.js";
+import type { SongQueueRepository } from "../modules/song-queue/infrastructure/SongQueueRepository.js";
 import type { User } from "../modules/user/domain/User.js";
 import type { UserRepository } from "../modules/user/infrastructure/UserRepository.js";
 

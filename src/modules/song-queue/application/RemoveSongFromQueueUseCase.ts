@@ -2,7 +2,7 @@ import type { WebSocketConnectionManager } from "../../../shared/core/WebSocketC
 import type { RequestValidators } from "../../../shared/RequestValidators.js";
 import { SongEntryWebSocketAction } from "../models/SongEntryWebSocketActionEnum.js";
 import type { RemoveSongFromQueueReq } from "../models/SongQueueDTO.js";
-import type { SongQueueRepository } from "../repository/SongQueueRepository.js";
+import type { SongQueueRepository } from "../infrastructure/SongQueueRepository.js";
 
 export class RemoveSongFromQueueUseCase {
   constructor(
@@ -21,8 +21,7 @@ export class RemoveSongFromQueueUseCase {
     );
 
     const isValidRequester =
-      room.isRoomHost(data.userId) ||
-      songEntry.isRequester(data.userId);
+      room.isRoomHost(data.userId) || songEntry.isRequester(data.userId);
 
     if (!isValidRequester) {
       throw new Error(
@@ -30,12 +29,15 @@ export class RemoveSongFromQueueUseCase {
       );
     }
 
+    const result = await this.songQueueRepo.removeQueuedSong(data.songId);
+
     this.webSocketManager.broadcastToRoom(data.roomId, {
       type: SongEntryWebSocketAction.REMOVE_SONG,
       userId: data.userId,
       message: `${requestingUser.getUsername()} has removed the song: ${songEntry.getSongEntryInfo().songName}`,
+      data: songEntry.getSongEntryInfo().songEntryId,
     });
 
-    return await this.songQueueRepo.removeQueuedSong(data.songId);
+    return result;
   }
 }
