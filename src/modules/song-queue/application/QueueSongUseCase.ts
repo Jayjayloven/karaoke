@@ -4,11 +4,11 @@ import type { UserRepository } from "../../user/infrastructure/UserRepository.js
 import { SongEntry } from "../domain/SongEntry.js";
 import { SongEntryWebSocketAction } from "../models/SongEntryWebSocketActionEnum.js";
 import type { QueueSongReq } from "../models/SongQueueDTO.js";
-import type { SongQueueRepository } from "../infrastructure/SongQueueRepository.js";
+import type { ISongQueueRepository } from "../models/ISongQueueRepository.js";
 
 export class QueueSongUseCase {
   constructor(
-    private readonly songQueueRepo: SongQueueRepository,
+    private readonly songQueueRepo: ISongQueueRepository,
     private readonly userRepo: UserRepository,
     private readonly roomRepo: RoomRepository,
     private readonly webSocketManager: WebSocketConnectionManager,

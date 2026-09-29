@@ -2,11 +2,11 @@ import type { WebSocketConnectionManager } from "../../../shared/core/WebSocketC
 import type { RequestValidators } from "../../../shared/RequestValidators.js";
 import { SongEntryWebSocketAction } from "../models/SongEntryWebSocketActionEnum.js";
 import type { RemoveSongFromQueueReq } from "../models/SongQueueDTO.js";
-import type { SongQueueRepository } from "../infrastructure/SongQueueRepository.js";
+import type { ISongQueueRepository } from "../models/ISongQueueRepository.js";
 
 export class RemoveSongFromQueueUseCase {
   constructor(
-    private readonly songQueueRepo: SongQueueRepository,
+    private readonly songQueueRepo: ISongQueueRepository,
     private readonly webSocketManager: WebSocketConnectionManager,
     private readonly requestValidator: RequestValidators,
   ) {}

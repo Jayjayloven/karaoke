@@ -9,7 +9,7 @@ export class SongQueueRepository {
     roomId: string,
     songName: string,
     mediaUrl: string,
-  ) {
+  ): Promise<SongEntry> {
     const query = `
     INSERT INTO song_queue (user_id, room_id, song_name, media_url)
     VALUES ($1, $2, $3, $4)
@@ -58,7 +58,7 @@ export class SongQueueRepository {
     songId: string,
     songName: string,
     mediaUrl: string,
-  ) {
+  ): Promise<boolean> {
     const query = `
     UPDATE song_queue SET songName = $1, mediaUrl = $2 
     WHERE id = $3`;

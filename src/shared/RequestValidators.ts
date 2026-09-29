@@ -1,15 +1,15 @@
 import type { Room } from "../modules/room/domain/Room.js";
-import type { RoomRepository } from "../modules/room/infrastructure/RoomRepository.js";
+import type { IRoomRepository } from "../modules/room/models/IRoomRepository.js";
 import type { SongEntry } from "../modules/song-queue/domain/SongEntry.js";
-import type { SongQueueRepository } from "../modules/song-queue/infrastructure/SongQueueRepository.js";
+import type { ISongQueueRepository } from "../modules/song-queue/models/ISongQueueRepository.js";
 import type { User } from "../modules/user/domain/User.js";
-import type { UserRepository } from "../modules/user/infrastructure/UserRepository.js";
+import type { IUserRepository } from "../modules/user/models/IUserRepository.js";
 
 export class RequestValidators {
   constructor(
-    private readonly songQueueRepo: SongQueueRepository,
-    private readonly userRepo: UserRepository,
-    private readonly roomRepo: RoomRepository,
+    private readonly songQueueRepo: ISongQueueRepository,
+    private readonly userRepo: IUserRepository,
+    private readonly roomRepo: IRoomRepository,
   ) {}
 
   public async doesUserExist(userId: string): Promise<User> {
