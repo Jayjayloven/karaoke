@@ -34,29 +34,32 @@ export const createRoomUseCase = new CreateRoomUseCase(
   roomRepository,
   userRepository,
   webSocketManager,
+  requestValidators,
 );
 export const deleteRoomUseCase = new DeleteRoomUseCase(
   roomRepository,
   userRepository,
   webSocketManager,
+  requestValidators,
 );
 export const joinRoomUseCase = new JoinRoomUseCase(
   roomRepository,
   userRepository,
   webSocketManager,
+  requestValidators,
 );
 export const leaveRoomUseCase = new LeaveRoomUseCase(
   roomRepository,
   userRepository,
   webSocketManager,
+  requestValidators,
 );
 
 // Song Queue Use Cases
 export const queueSongUseCase = new QueueSongUseCase(
   songQueueRepository,
-  userRepository,
-  roomRepository,
   webSocketManager,
+  requestValidators,
 );
 
 export const removeSongFromQueueUseCase = new RemoveSongFromQueueUseCase(
@@ -73,4 +76,7 @@ export const editQueuedSongUseCase = new EditQueuedSongUseCase(
 
 // User Use Cases
 export const createUserUseCase = new CreateUserUseCase(userRepository);
-export const updateUsernameUseCase = new UpdateUsernameUseCase(userRepository);
+export const updateUsernameUseCase = new UpdateUsernameUseCase(
+  userRepository,
+  requestValidators,
+);

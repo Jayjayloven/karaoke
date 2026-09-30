@@ -1,4 +1,5 @@
 import type { WebSocketConnectionManager } from "../../../shared/core/WebSocketConnectionManager.js";
+import type { RequestValidators } from "../../../shared/RequestValidators.js";
 import type { User } from "../../user/domain/User.js";
 import type { IUserRepository } from "../../user/models/IUserRepository.js";
 import type { IRoomRepository } from "../models/IRoomRepository.js";
@@ -11,20 +12,13 @@ export class DeleteRoomUseCase {
     private readonly roomRepo: IRoomRepository,
     private readonly userRepo: IUserRepository,
     private readonly webSocketManager: WebSocketConnectionManager,
+    private readonly requestValidator: RequestValidators,
   ) {}
 
   public async execute(data: DeleteRoomReq): Promise<boolean> {
-    const room = await this.roomRepo.findRoomById(data.roomId);
-    if (!room) {
-      throw new Error(`Room with ID ${data.roomId} not found.`);
-    }
+    const room = await this.requestValidator.doesRoomExist(data.roomId);
 
-    const host = await this.userRepo.findUserById(String(data.hostId));
-    if (!host) {
-      throw new Error(
-        `Cannot join room: Host with ID ${data.hostId} does not exist.`,
-      );
-    }
+    const host = await this.requestValidator.doesUserExist(data.hostId);
 
     room.validateOwnership(data.hostId);
 

@@ -1,4 +1,5 @@
 import type { WebSocketConnectionManager } from "../../../shared/core/WebSocketConnectionManager.js";
+import type { RequestValidators } from "../../../shared/RequestValidators.js";
 import type { IUserRepository } from "../../user/models/IUserRepository.js";
 import type { IRoomRepository } from "../models/IRoomRepository.js";
 import type { JoinRoomReq } from "../models/RoomDTO.js";
@@ -9,19 +10,14 @@ export class JoinRoomUseCase {
     private readonly roomRepo: IRoomRepository,
     private readonly userRepo: IUserRepository,
     private readonly webSocketManager: WebSocketConnectionManager,
+    private readonly requestValidator: RequestValidators,
   ) {}
 
   public async execute(data: JoinRoomReq): Promise<boolean> {
-    const requestedRoom = await this.roomRepo.findRoomById(data.roomId);
-    if (!requestedRoom) {
-      throw new Error(`Room with ID ${data.roomId} not found.`);
-    }
-    const user = await this.userRepo.findUserById(String(data.userId));
-    if (!user) {
-      throw new Error(
-        `Cannot join room: Host with ID ${data.userId} does not exist.`,
-      );
-    }
+    const user = await this.requestValidator.doesUserExist(data.userId);
+    const requestedRoom = await this.requestValidator.doesRoomExist(
+      data.roomId,
+    );
 
     requestedRoom.validateRoomStatus();
     requestedRoom.validateRoomCode(data.roomCode);

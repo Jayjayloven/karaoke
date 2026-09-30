@@ -5,22 +5,19 @@ import { RoomStatusEnum } from "../models/RoomStatus.js";
 import type { IUserRepository } from "../../user/models/IUserRepository.js";
 import type { WebSocketConnectionManager } from "../../../shared/core/WebSocketConnectionManager.js";
 import { RoomWebSocketAction } from "../models/RoomWebSocketActionEnum.js";
+import type { RequestValidators } from "../../../shared/RequestValidators.js";
 
 export class CreateRoomUseCase {
   constructor(
     private readonly roomRepo: IRoomRepository,
     private readonly userRepo: IUserRepository,
     private readonly webSocketManager: WebSocketConnectionManager,
+    private readonly requestValidator: RequestValidators,
   ) {}
 
   public async execute(data: CreateRoomReq): Promise<Room> {
-    const host = await this.userRepo.findUserById(String(data.hostId));
+    const host = await this.requestValidator.doesUserExist(data.hostId);
 
-    if (!host) {
-      throw new Error(
-        `Cannot create room: Host with ID ${data.hostId} does not exist.`,
-      );
-    }
     const newRoom = Room.createRoom(
       data.roomName,
       data.hostId,

@@ -5,29 +5,21 @@ import { SongEntry } from "../domain/SongEntry.js";
 import { SongEntryWebSocketAction } from "../models/SongEntryWebSocketActionEnum.js";
 import type { QueueSongReq } from "../models/SongQueueDTO.js";
 import type { ISongQueueRepository } from "../models/ISongQueueRepository.js";
+import type { RequestValidators } from "../../../shared/RequestValidators.js";
 
 export class QueueSongUseCase {
   constructor(
     private readonly songQueueRepo: ISongQueueRepository,
-    private readonly userRepo: UserRepository,
-    private readonly roomRepo: RoomRepository,
     private readonly webSocketManager: WebSocketConnectionManager,
+    private readonly requestValidator: RequestValidators,
   ) {}
 
   public async execute(data: QueueSongReq): Promise<SongEntry> {
     const { userId, roomId, songName, mediaUrl } = data;
 
-    const user = await this.userRepo.findUserById(String(userId));
-    if (!user) {
-      throw new Error(
-        `Cannot add song entry. Requesting user with ID ${userId} does not exist`,
-      );
-    }
+    const user = await this.requestValidator.doesUserExist(data.userId);
 
-    const room = await this.roomRepo.findRoomById(roomId);
-    if (!room) {
-      throw new Error(`Cannot add song entry. Room ${roomId} does not exist.`);
-    }
+    await this.requestValidator.doesRoomExist(data.roomId);
 
     const savedSongEntry = await this.songQueueRepo.queueSong(
       userId,
