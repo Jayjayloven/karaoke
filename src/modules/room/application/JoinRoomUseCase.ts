@@ -33,6 +33,7 @@ export class JoinRoomUseCase {
       action: RoomWebSocketAction.USER_JOINED,
       userId: data.userId,
       message: `${user.getUsername()} has joined the room: ${requestedRoom.getRoomName()}`,
+      data: { joiningUser: user.getUserInfo() },
     });
 
     return joinRoomResult && updateUserResult;

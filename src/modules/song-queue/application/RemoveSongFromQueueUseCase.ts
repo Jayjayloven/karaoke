@@ -35,7 +35,7 @@ export class RemoveSongFromQueueUseCase {
       type: SongEntryWebSocketAction.REMOVE_SONG,
       userId: data.userId,
       message: `${requestingUser.getUsername()} has removed the song: ${songEntry.getSongEntryInfo().songName}`,
-      data: songEntry.getSongEntryInfo().songEntryId,
+      data: { songId: songEntry.getSongEntryInfo().songEntryId },
     });
 
     return result;

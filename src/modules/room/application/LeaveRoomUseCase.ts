@@ -38,8 +38,8 @@ export class LeaveRoomUseCase {
     this.webSocketManager.broadcastToRoom(data.roomId, {
       action: RoomWebSocketAction.USER_LEFT,
       userId: data.userId,
-      newHostId: inheritingHostId,
       message: `${leavingUser.getUsername()} has left the room: ${room.getRoomName()}`,
+      data: { leavingUserId: data.userId, newHostId: inheritingHostId },
     });
 
     return Boolean(

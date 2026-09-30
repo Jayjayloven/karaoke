@@ -14,7 +14,14 @@ export class QueueSongUseCase {
     private readonly requestValidator: RequestValidators,
   ) {}
 
-  public async execute(data: QueueSongReq): Promise<SongEntry> {
+  public async execute(data: QueueSongReq): Promise<{
+    songEntryId: string;
+    roomId: string;
+    userId: string;
+    songName: string;
+    mediaUrl: string;
+    hasPlayed: boolean;
+  }> {
     const { userId, roomId, songName, mediaUrl } = data;
 
     const user = await this.requestValidator.doesUserExist(data.userId);
@@ -32,9 +39,9 @@ export class QueueSongUseCase {
       action: SongEntryWebSocketAction.QUEUED_SONG,
       userId: userId,
       message: `${user.getUsername()} has queued the song: ${songName}`,
-      data: savedSongEntry.getSongEntryInfo(),
+      data: { newSong: savedSongEntry.getSongEntryInfo() },
     });
 
-    return savedSongEntry;
+    return savedSongEntry.getSongEntryInfo();
   }
 }

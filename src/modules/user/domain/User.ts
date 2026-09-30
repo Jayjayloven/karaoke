@@ -5,6 +5,18 @@ export class User {
     private roomId: string | null,
   ) {}
 
+  public getUserInfo(): {
+    userId: string;
+    username: string;
+    roomId: string | null;
+  } {
+    return {
+      userId: this.userId,
+      username: this.username,
+      roomId: this.roomId,
+    };
+  }
+
   public getUserId(): string {
     return this.userId;
   }

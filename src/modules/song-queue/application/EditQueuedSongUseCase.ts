@@ -47,7 +47,7 @@ export class EditQueuedSongUseCase {
       type: SongEntryWebSocketAction.EDIT_SONG,
       userId: data.userId,
       message: `${user.getUsername()} has updated a song with ID: ${songId}`,
-      data: songEntry.getSongEntryInfo(),
+      data: { updatedSong: songEntry.getSongEntryInfo() },
     });
 
     return result;

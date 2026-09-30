@@ -35,6 +35,7 @@ export class DeleteRoomUseCase {
       action: RoomWebSocketAction.ROOM_CLOSED,
       userId: data.hostId,
       message: `${host.getUsername()} has closed the room: ${room.getRoomName()}`,
+      data: { roomId: room.getId() },
     });
 
     return await this.roomRepo.deleteRoom(room.getId());
