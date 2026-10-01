@@ -6,6 +6,7 @@ import {
   getRoomSongQueueUseCase,
   getUsersInRoomUseCase,
   joinRoomUseCase,
+  kickUserUseCase,
   leaveRoomUseCase,
 } from "../../../shared/core/dependencies.js";
 
@@ -18,6 +19,7 @@ const roomController = new RoomController(
   deleteRoomUseCase,
   joinRoomUseCase,
   leaveRoomUseCase,
+  kickUserUseCase,
 );
 
 /**
@@ -208,5 +210,39 @@ router.get("/rooms/users/:userId/:roomId", (req, res) =>
 router.get("/rooms/songs/:userId/:roomId", (req, res) =>
   roomController.getRoomSongQueue(req, res),
 );
+
+/**
+ * @swagger
+ * /rooms/user:
+ *   put:
+ *     summary: Kick user from your karaoke room
+ *     tags: [Rooms]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - hostId
+ *               - userToBeRemovedId
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 example: "1"
+ *               roomId:
+ *                 type: string
+ *                 example: "1"
+ *               userToBeRemovedId:
+ *                 type: string
+ *                 example: "1"
+ *     responses:
+ *       201:
+ *         description: Kicked user successfully
+ *       400:
+ *         description: Bad request
+ */
+router.put("/rooms/user", (req, res) => roomController.kickUser(req, res));
 
 export const roomRouter = router;

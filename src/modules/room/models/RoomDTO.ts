@@ -28,3 +28,9 @@ export interface LeaveRoomReq {
   userId: string;
   roomId: string;
 }
+
+export interface KickUserReq {
+  userId: string;
+  roomId: string;
+  userToBeRemovedId: string;
+}

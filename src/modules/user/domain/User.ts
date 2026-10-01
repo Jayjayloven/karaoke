@@ -43,7 +43,7 @@ export class User {
 
   public isUserInRoom(roomId: string) {
     if (this.roomId != roomId) {
-      throw new Error(`User ${this.getUserId} is not in Room ${roomId}`);
+      throw new Error(`User ${this.getUserId()} is not in Room ${roomId}`);
     }
   }
 }
