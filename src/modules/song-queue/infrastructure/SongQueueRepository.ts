@@ -21,11 +21,30 @@ export class SongQueueRepository {
 
     return new SongEntry(
       row.id,
-      row.roomId,
-      row.userId,
-      row.songName,
-      row.mediaUrl,
-      row.hasPlayed,
+      row.room_id,
+      row.user_id,
+      row.song_name,
+      row.media_url,
+      row.has_played,
+    );
+  }
+
+  public async getUnplayedSongsByRoom(roomId: string): Promise<SongEntry[]> {
+    const query = `SELECT * FROM song_queue WHERE room_id = $1 AND has_played = false`;
+    const values = [roomId];
+
+    const result = await this.dbPool.query(query, values);
+
+    return result.rows.map(
+      (row) =>
+        new SongEntry(
+          row.id,
+          row.room_id,
+          row.user_id,
+          row.song_name,
+          row.media_url,
+          row.has_played,
+        ),
     );
   }
 
@@ -60,7 +79,7 @@ export class SongQueueRepository {
     mediaUrl: string,
   ): Promise<boolean> {
     const query = `
-    UPDATE song_queue SET songName = $1, mediaUrl = $2 
+    UPDATE song_queue SET song_name = $1, media_url = $2 
     WHERE id = $3`;
     const values = [songName, mediaUrl, songId];
 

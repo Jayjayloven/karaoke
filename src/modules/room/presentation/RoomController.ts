@@ -3,10 +3,18 @@ import type { CreateRoomUseCase } from "../application/CreateRoomUseCase.js";
 import type { DeleteRoomUseCase } from "../application/DeleteRoomUseCase.js";
 import type { JoinRoomUseCase } from "../application/JoinRoomUseCase.js";
 import type { LeaveRoomUseCase } from "../application/LeaveRoomUseCase.js";
+import type { GetRoomSongQueueUseCase } from "../application/GetRoomSongQueueUseCase.js";
+import type { GetUsersInRoomUseCase } from "../application/GetUsersInRoomUseCase.js";
+import type {
+  GetRoomSongQueueReq,
+  GetUsersInRoomReq,
+} from "../models/RoomDTO.js";
 
 export class RoomController {
   constructor(
     private readonly createRoomUseCase: CreateRoomUseCase,
+    private readonly getRoomSongQueueUseCase: GetRoomSongQueueUseCase,
+    private readonly getUsersInRoomUseCase: GetUsersInRoomUseCase,
     private readonly deleteRoomUseCase: DeleteRoomUseCase,
     private readonly joinRoomUseCase: JoinRoomUseCase,
     private readonly leaveRoomUseCase: LeaveRoomUseCase,
@@ -16,6 +24,36 @@ export class RoomController {
     try {
       const result = await this.createRoomUseCase.execute(req.body);
       res.status(201).json(result);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  public async getRoomSongQueue(
+    req: Request<GetRoomSongQueueReq>,
+    res: Response,
+  ): Promise<void> {
+    try {
+      const result = await this.getRoomSongQueueUseCase.execute({
+        userId: req.params.userId,
+        roomId: req.params.roomId,
+      });
+      res.status(200).json(result);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  public async getUsersInRoom(
+    req: Request<GetUsersInRoomReq>,
+    res: Response,
+  ): Promise<void> {
+    try {
+      const result = await this.getUsersInRoomUseCase.execute({
+        userId: req.params.userId,
+        roomId: req.params.roomId,
+      });
+      res.status(200).json(result);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }

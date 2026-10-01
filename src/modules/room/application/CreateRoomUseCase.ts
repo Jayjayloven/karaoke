@@ -3,15 +3,12 @@ import { Room } from "../domain/Room.js";
 import type { CreateRoomReq } from "../models/RoomDTO.js";
 import { RoomStatusEnum } from "../models/RoomStatus.js";
 import type { IUserRepository } from "../../user/models/IUserRepository.js";
-import type { WebSocketConnectionManager } from "../../../shared/core/WebSocketConnectionManager.js";
-import { RoomWebSocketAction } from "../models/RoomWebSocketActionEnum.js";
 import type { RequestValidators } from "../../../shared/RequestValidators.js";
 
 export class CreateRoomUseCase {
   constructor(
     private readonly roomRepo: IRoomRepository,
     private readonly userRepo: IUserRepository,
-    private readonly webSocketManager: WebSocketConnectionManager,
     private readonly requestValidator: RequestValidators,
   ) {}
 

@@ -3,6 +3,16 @@ export interface CreateRoomReq {
   hostId: string;
 }
 
+export interface GetUsersInRoomReq {
+  userId: string;
+  roomId: string;
+}
+
+export interface GetRoomSongQueueReq {
+  userId: string;
+  roomId: string;
+}
+
 export interface DeleteRoomReq {
   roomId: string;
   hostId: string;

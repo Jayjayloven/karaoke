@@ -3,6 +3,8 @@ import { RoomController } from "./RoomController.js";
 import {
   createRoomUseCase,
   deleteRoomUseCase,
+  getRoomSongQueueUseCase,
+  getUsersInRoomUseCase,
   joinRoomUseCase,
   leaveRoomUseCase,
 } from "../../../shared/core/dependencies.js";
@@ -11,6 +13,8 @@ const router = Router();
 
 const roomController = new RoomController(
   createRoomUseCase,
+  getRoomSongQueueUseCase,
+  getUsersInRoomUseCase,
   deleteRoomUseCase,
   joinRoomUseCase,
   leaveRoomUseCase,
@@ -140,5 +144,69 @@ router.patch("/rooms", (req, res) => roomController.joinRoom(req, res));
  *         description: Bad request
  */
 router.patch("/rooms/leave", (req, res) => roomController.leaveRoom(req, res));
+
+/**
+ * @swagger
+ * /rooms:
+ *   get:
+ *     summary: Get singers from a karaoke room
+ *     tags: [Rooms]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - hostId
+ *             properties:
+ *               roomName:
+ *                 type: string
+ *                 example: "1"
+ *               hostId:
+ *                 type: string
+ *                 example: "1"
+ *     responses:
+ *       201:
+ *         description: Fetched users successfully
+ *       400:
+ *         description: Bad request
+ */
+router.get("/rooms/users/:userId/:roomId", (req, res) =>
+  roomController.getUsersInRoom(req, res),
+);
+
+/**
+ * @swagger
+ * /rooms:
+ *   get:
+ *     summary: Get song queue from a karaoke room
+ *     tags: [Rooms]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - hostId
+ *             properties:
+ *               roomName:
+ *                 type: string
+ *                 example: "1"
+ *               hostId:
+ *                 type: string
+ *                 example: "1"
+ *     responses:
+ *       201:
+ *         description: Fetched songs successfully
+ *       400:
+ *         description: Bad request
+ */
+router.get("/rooms/songs/:userId/:roomId", (req, res) =>
+  roomController.getRoomSongQueue(req, res),
+);
 
 export const roomRouter = router;

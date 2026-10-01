@@ -36,7 +36,7 @@ export class QueueSongUseCase {
     );
 
     this.webSocketManager.broadcastToRoom(roomId, {
-      action: SongEntryWebSocketAction.QUEUED_SONG,
+      type: SongEntryWebSocketAction.QUEUED_SONG,
       userId: userId,
       message: `${user.getUsername()} has queued the song: ${songName}`,
       data: { newSong: savedSongEntry.getSongEntryInfo() },

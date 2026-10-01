@@ -7,6 +7,7 @@ export interface ISongQueueRepository {
     songName: string,
     mediaUrl: string,
   ): Promise<SongEntry>;
+  getUnplayedSongsByRoom(roomId: string): Promise<SongEntry[]>;
   removeQueuedSong(songId: string): Promise<boolean>;
   findQueuedSongById(songId: string): Promise<SongEntry | null>;
   updateQueuedSong(

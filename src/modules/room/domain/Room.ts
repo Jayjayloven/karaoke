@@ -34,7 +34,7 @@ export class Room {
   public validateOwnership(requestingUserId: string): void {
     if (this.hostId !== requestingUserId) {
       throw new Error(
-        `User ${requestingUserId} is not authorized to modify room ${this.id}:${this.room_name}.`,
+        `User ${requestingUserId} is not authorized to modify room ${this.id}:${this.roomName}.`,
       );
     }
   }
@@ -42,7 +42,7 @@ export class Room {
   public validateRoomCode(roomCode: string): void {
     if (this.roomCode !== roomCode) {
       throw new Error(
-        `Room code ${roomCode} is not incorrect for room ${this.id}:${this.room_name}.`,
+        `Room code ${roomCode} is not incorrect for room ${this.id}:${this.roomName}.`,
       );
     }
   }
