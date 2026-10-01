@@ -18,6 +18,7 @@ import { EditQueuedSongUseCase } from "../../modules/song-queue/application/Edit
 import { GetRoomSongQueueUseCase } from "../../modules/room/application/GetRoomSongQueueUseCase.js";
 import { GetUsersInRoomUseCase } from "../../modules/room/application/GetUsersInRoomUseCase.js";
 import { KickUserUseCase } from "../../modules/room/application/KickUserUseCase.js";
+import { ChangeHostUseCase } from "../../modules/room/application/ChangeHostUseCase.js";
 
 // Infrastructure
 export const roomRepository = new RoomRepository(dbPool);
@@ -52,6 +53,13 @@ export const kickUserUseCase = new KickUserUseCase(
   requestValidators,
   webSocketManager,
 );
+
+export const changeHostUseCase = new ChangeHostUseCase(
+  roomRepository,
+  requestValidators,
+  webSocketManager,
+);
+
 export const deleteRoomUseCase = new DeleteRoomUseCase(
   roomRepository,
   userRepository,

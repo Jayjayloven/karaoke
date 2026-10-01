@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { RoomController } from "./RoomController.js";
 import {
+  changeHostUseCase,
   createRoomUseCase,
   deleteRoomUseCase,
   getRoomSongQueueUseCase,
@@ -20,6 +21,7 @@ const roomController = new RoomController(
   joinRoomUseCase,
   leaveRoomUseCase,
   kickUserUseCase,
+  changeHostUseCase,
 );
 
 /**
@@ -213,7 +215,7 @@ router.get("/rooms/songs/:userId/:roomId", (req, res) =>
 
 /**
  * @swagger
- * /rooms/user:
+ * /rooms/kick-user:
  *   put:
  *     summary: Kick user from your karaoke room
  *     tags: [Rooms]
@@ -243,6 +245,41 @@ router.get("/rooms/songs/:userId/:roomId", (req, res) =>
  *       400:
  *         description: Bad request
  */
-router.put("/rooms/user", (req, res) => roomController.kickUser(req, res));
+router.put("/rooms/kick-user", (req, res) => roomController.kickUser(req, res));
+
+/**
+ * @swagger
+ * /rooms/change-host:
+ *   put:
+ *     summary: Change the host of a karaoke room
+ *     tags: [Rooms]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - roomId
+ *               - newHostId
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 example: "1"
+ *               roomId:
+ *                 type: string
+ *                 example: "1"
+ *               newHostId:
+ *                 type: string
+ *                 example: "1"
+ *     responses:
+ *       201:
+ *         description: Changed host successfully
+ *       400:
+ *         description: Bad request
+ */
+router.put("/rooms/change-host", (req, res) => roomController.changeHost(req, res));
+
 
 export const roomRouter = router;

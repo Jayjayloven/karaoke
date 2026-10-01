@@ -72,4 +72,8 @@ export class Room {
       this.hostId = newHostId;
     }
   }
+
+  public changeHost(hostId: string) {
+    this.hostId = hostId;
+  }
 }

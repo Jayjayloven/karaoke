@@ -58,7 +58,7 @@ router.post("/song-queue", (req, res) =>
  * @swagger
  * /song-queue:
  *   put:
- *     summary: Edot a song queued for your karaoke room
+ *     summary: Edit a song queued for your karaoke room
  *     tags: [Song-Queue]
  *     requestBody:
  *       required: true

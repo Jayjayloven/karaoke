@@ -8,9 +8,9 @@ import type { GetUsersInRoomUseCase } from "../application/GetUsersInRoomUseCase
 import type {
   GetRoomSongQueueReq,
   GetUsersInRoomReq,
-  KickUserReq,
 } from "../models/RoomDTO.js";
 import type { KickUserUseCase } from "../application/KickUserUseCase.js";
+import type { ChangeHostUseCase } from "../application/ChangeHostUseCase.js";
 
 export class RoomController {
   constructor(
@@ -21,6 +21,7 @@ export class RoomController {
     private readonly joinRoomUseCase: JoinRoomUseCase,
     private readonly leaveRoomUseCase: LeaveRoomUseCase,
     private readonly kickUserUseCase: KickUserUseCase,
+    private readonly changeHostUseCase: ChangeHostUseCase,
   ) {}
 
   public async createRoom(req: Request, res: Response): Promise<void> {
@@ -65,6 +66,15 @@ export class RoomController {
   public async kickUser(req: Request, res: Response) {
     try {
       const result = await this.kickUserUseCase.execute(req.body);
+      res.status(200).json(result);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  public async changeHost(req: Request, res: Response) {
+    try {
+      const result = await this.changeHostUseCase.execute(req.body);
       res.status(200).json(result);
     } catch (error: any) {
       res.status(400).json({ error: error.message });

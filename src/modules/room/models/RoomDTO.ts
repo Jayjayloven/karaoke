@@ -34,3 +34,9 @@ export interface KickUserReq {
   roomId: string;
   userToBeRemovedId: string;
 }
+
+export interface ChangeUserReq {
+  userId: string;
+  roomId: string;
+  newHostId: string;
+}
